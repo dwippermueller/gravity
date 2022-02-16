@@ -10,7 +10,6 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 export class GameScene extends Phaser.Scene {
     private player: Phaser.Types.Physics.Arcade.GameObjectWithDynamicBody
     private starfield: Phaser.GameObjects.TileSprite
-    private speed = 0
 
     constructor() {
       super(sceneConfig);
@@ -22,9 +21,21 @@ export class GameScene extends Phaser.Scene {
     }
 
     public create() {
-      this.starfield = this.add.tileSprite(window.innerWidth / 2, window.innerHeight / 2, window.innerWidth, window.innerHeight, 'starfield')
-      this.player = this.physics.add.sprite(40, 40, 'player1')
-      this.player.body.setGravityY(50)
+        const windowWidth = window.innerWidth
+        const windowHeight = window.innerHeight
+      this.starfield = this.add.tileSprite(windowWidth / 2, windowHeight / 2, windowWidth, windowHeight, 'starfield')
+
+
+        this.player = this.physics.add.sprite(40, 40, 'player1')
+      this.player.body.setGravityY(100)
+
+
+        this.player.body.setBounce(0.3, 0.3);
+
+        this.player.body.setCollideWorldBounds(true)
+
+
+
     }
    
     public update() {
@@ -37,9 +48,9 @@ export class GameScene extends Phaser.Scene {
            }
  
         if (cursorKeys.right.isDown) {
-          this.player.body.angularVelocity = 60
+          this.player.body.angularVelocity = 100
         } else if (cursorKeys.left.isDown) {
-          this.player.body.angularVelocity = -60
+          this.player.body.angularVelocity = -100
         } else {
             this.player.body.angularVelocity = 0
         }
