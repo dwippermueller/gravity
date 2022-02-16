@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.game = void 0;
 var Phaser = require("phaser");
+var gameScene_1 = require("./gameScene");
 var gameConfig = {
     title: 'Sample',
     type: Phaser.AUTO,
@@ -15,6 +16,7 @@ var gameConfig = {
             debug: true,
         },
     },
+    scene: gameScene_1.GameScene,
     parent: 'game',
     backgroundColor: '#000000',
 };
