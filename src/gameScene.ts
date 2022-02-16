@@ -72,7 +72,7 @@ export class GameScene extends Phaser.Scene {
         right : Phaser.Input.Keyboard.Key
     ) {
         if (thrust.isDown) {
-            const velocity = this.physics.velocityFromAngle(player.body.rotation - 90, 5)
+            const velocity = this.physics.velocityFromAngle(player.body.rotation - 90, 10)
             player.body.velocity.x += velocity.x
             player.body.velocity.y += velocity.y
         }
@@ -85,9 +85,9 @@ export class GameScene extends Phaser.Scene {
         }
 
         if (right.isDown) {
-            player.body.angularVelocity = 100
+            player.body.angularVelocity = 200
         } else if (left.isDown) {
-            player.body.angularVelocity = -100
+            player.body.angularVelocity = -200
         } else {
             player.body.angularVelocity = 0
         }
