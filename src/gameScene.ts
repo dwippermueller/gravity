@@ -1,4 +1,5 @@
 import "phaser"
+import { Game } from "phaser";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
     active: false,
@@ -7,8 +8,9 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   };
   
 export class GameScene extends Phaser.Scene {
-    private player: Phaser.GameObjects.Sprite
+    private player: Phaser.Types.Physics.Arcade.GameObjectWithDynamicBody
     private starfield: Phaser.GameObjects.TileSprite
+    private speed = 0
 
     constructor() {
       super(sceneConfig);
@@ -21,28 +23,25 @@ export class GameScene extends Phaser.Scene {
 
     public create() {
       this.starfield = this.add.tileSprite(window.innerWidth / 2, window.innerHeight / 2, window.innerWidth, window.innerHeight, 'starfield')
-      this.player = this.add.sprite(40, 40, 'player1')
-      this.physics.add.existing(this.player)
+      this.player = this.physics.add.sprite(40, 40, 'player1')
+      this.player.body.setGravityY(100)
+      this.player.body.angle = 90
     }
    
     public update() {
         this.starfield.tilePositionY += 2
         const cursorKeys = this.input.keyboard.createCursorKeys()
  
-        if (cursorKeys.up.isDown) {
-          this.player.body.velocity.y = -500
-        } else if (cursorKeys.down.isDown) {
-            this.player.body.velocity.y = 500
-        } else {
-            this.player.body.velocity.y = 0
-        }
-         
+        if (cursorKeys.space.isDown) {
+            const velocity = this.physics.velocityFromAngle(this.player.body.rotation, 10)
+            this.player.body.velocity.x += velocity.x
+            this.player.body.velocity.y += velocity.y
+           }
+ 
         if (cursorKeys.right.isDown) {
-          this.player.body.velocity.x = 500
+          this.player.body.angularVelocity += 2
         } else if (cursorKeys.left.isDown) {
-          this.player.body.velocity.x = -500
-        } else {
-          this.player.body.velocity.x = 0
+          this.player.body.angularVelocity -= 2
         }
         
     }
