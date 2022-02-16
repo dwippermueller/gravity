@@ -24,11 +24,17 @@ module.exports = {
   },
 
   output: {
-    filename: '[name].js',
+    filename: 'app.bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
 
   mode: process.env.NODE_ENV == 'production' ? 'production' : 'development',
+
+  devServer: {
+    contentBase: path.resolve(__dirname, 'dist'),
+    writeToDisk: true,
+    open: true,
+  },
 
   plugins: [
     new CopyPlugin({
@@ -52,6 +58,7 @@ module.exports = {
       cacheGroups: {
         commons: {
           test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
           chunks: 'all',
           filename: '[name].app.bundle.js',
         },
