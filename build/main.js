@@ -13,7 +13,7 @@ var gameConfig = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true,
+            debug: false,
         },
     },
     scene: gameScene_1.GameScene,
