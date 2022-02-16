@@ -1,6 +1,14 @@
 import "phaser"
 import { Game } from "phaser";
 import { BulletGroup } from "./bulletGroup";
+import Map = Phaser.Structs.Map;
+import GameObjectWithDynamicBody = Phaser.Types.Physics.Arcade.GameObjectWithDynamicBody;
+import * as Phaser from "phaser";
+
+enum keys {
+    RIGHT, LEFT, FIRE, THRUST
+}
+
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
     active: false,
@@ -9,7 +17,8 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export class GameScene extends Phaser.Scene {
-    private player: Phaser.Types.Physics.Arcade.GameObjectWithDynamicBody
+    private player1: Phaser.Types.Physics.Arcade.GameObjectWithDynamicBody
+    private player2: Phaser.Types.Physics.Arcade.GameObjectWithDynamicBody
     private starfield: Phaser.GameObjects.TileSprite
     private bullets: BulletGroup
     private bulletTime: number = 0
@@ -21,6 +30,7 @@ export class GameScene extends Phaser.Scene {
     public preload() {
         this.load.image('starfield', 'assets/starfield.png')
         this.load.image('player1', 'assets/player.png')
+        this.load.image('player2', 'assets/player2.png')
         this.load.image('bullet', 'assets/enemy-bullet.png')
     }
 
@@ -29,40 +39,57 @@ export class GameScene extends Phaser.Scene {
         const windowHeight = window.innerHeight
         this.starfield = this.add.tileSprite(windowWidth / 2, windowHeight / 2, windowWidth, windowHeight, 'starfield')
 
-
-        this.player = this.physics.add.sprite(40, 40, 'player1')
-        this.player.body.setGravityY(100)
-        this.player.body.setBounce(0.3, 0.3);
-        this.player.body.setCollideWorldBounds(true)
+        this.player1 = this.createPlayer('player1', 40, 40)
+        this.player2 = this.createPlayer('player2', 400, 400)
 
         this.bullets = new BulletGroup(this)
     }
 
+    public createPlayer(sprite : string, xPos : integer, yPos : integer) {
+        let player = this.physics.add.sprite(xPos, yPos, sprite)
+        player.body.setGravityY(100)
+        player.body.setBounce(0.3, 0.3);
+        player.body.setCollideWorldBounds(true)
+        return player
+    }
+
     public update() {
         this.starfield.tilePositionY += 2
-
         const cursorKeys = this.input.keyboard.createCursorKeys()
-        if (cursorKeys.up.isDown) {
-            const velocity = this.physics.velocityFromAngle(this.player.body.rotation - 90, 5)
-            this.player.body.velocity.x += velocity.x
-            this.player.body.velocity.y += velocity.y
+        const wKey = this.input.keyboard.addKey('W')
+        const aKey = this.input.keyboard.addKey('A')
+        const dKey = this.input.keyboard.addKey('D')
+
+        this.movePlayer(this.player1, cursorKeys.up, cursorKeys.space, cursorKeys.left, cursorKeys.right)
+        this.movePlayer(this.player2, wKey, cursorKeys.shift, aKey, dKey)
+    }
+
+    public movePlayer(
+        player : GameObjectWithDynamicBody,
+        thrust : Phaser.Input.Keyboard.Key,
+        fire : Phaser.Input.Keyboard.Key,
+        left : Phaser.Input.Keyboard.Key,
+        right : Phaser.Input.Keyboard.Key
+    ) {
+        if (thrust.isDown) {
+            const velocity = this.physics.velocityFromAngle(player.body.rotation - 90, 5)
+            player.body.velocity.x += velocity.x
+            player.body.velocity.y += velocity.y
         }
-        if (cursorKeys.space.isDown) {
+        if (fire.isDown) {
             if (this.game.getTime() > this.bulletTime) {
-                const velocity = this.physics.velocityFromAngle(this.player.body.rotation - 90, 500)
-                this.bullets.fireBullet(this.player.body.x, this.player.body.y, velocity)
+                const velocity = this.physics.velocityFromAngle(player.body.rotation - 90, 500)
+                this.bullets.fireBullet(player.body.x, player.body.y, velocity)
                 this.bulletTime = this.game.getTime() + 200
             }
         }
-       
-        if (cursorKeys.right.isDown) {
-            this.player.body.angularVelocity = 100
-        } else if (cursorKeys.left.isDown) {
-            this.player.body.angularVelocity = -100
+
+        if (right.isDown) {
+            player.body.angularVelocity = 100
+        } else if (left.isDown) {
+            player.body.angularVelocity = -100
         } else {
-            this.player.body.angularVelocity = 0
+            player.body.angularVelocity = 0
         }
-
     }
-
 }

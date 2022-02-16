@@ -29,7 +29,7 @@ export class BulletGroup extends Phaser.Physics.Arcade.Group {
 
     public fireBullet(x: integer, y: integer, velocity: Phaser.Math.Vector2) {
         const bullet = this.getFirstDead(true) as Bullet
-        bullet.fire(x, y, velocity)
+        bullet.fire(x + 10, y + 10, velocity)
     }
 
 }
