@@ -19,7 +19,7 @@ export class Asteroid extends Phaser.Physics.Arcade.Sprite {
     public preUpdate(time, delta) {
         super.preUpdate(time, delta);
 
-        if (this.y > window.innerHeight + 50) {
+        if (this.y > window.innerHeight + 50 || this.y < -100) {
             this.active = false
             this.visible = false
             this.setVelocityX(0)
