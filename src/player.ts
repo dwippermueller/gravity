@@ -6,6 +6,9 @@ import {GameScene} from "./gameScene";
 import Group = Phaser.GameObjects.Group;
 import Collider = Phaser.Physics.Arcade.Collider
 import { AsteroidGroup } from "./asteroidGroup";
+import {Scene} from "phaser";
+import {GameOverScene} from "./gameOver";
+import {game} from "./main";
 
 const TURNING_SPEED = 200
 const THRUST_SPEED = 10
@@ -23,11 +26,14 @@ export class Player {
     private bulletCollider: Collider
     private asteroidCollider: Collider
     private lives: Group
+    private playerNumber: integer
+    private numberOfLives = 3
 
     constructor(scene: GameScene, key: string, playerNumber: integer, xPos: integer, yPos: integer) {
         this.scene = scene
         this.xStartPosition = xPos
         this.yStartPosition = yPos
+        this.playerNumber = playerNumber
         
         this.noThrustKey = 'thrust' + playerNumber
         this.thrustKey = 'no-thrust' + playerNumber
@@ -58,7 +64,7 @@ export class Player {
         })
 
         this.lives = this.scene.add.group()
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < this.numberOfLives; i++) {
             let ship = this.lives.create(xPos + (30 * i), 60, 'starship1');
             ship.scale = 0.1
             ship.alpha = 0.4;
@@ -125,6 +131,10 @@ export class Player {
             this.hasCollided = true
             this.bulletCollider.active = false
             this.asteroidCollider.active = false
+        } else {
+            let gameOverScene = this.scene.game.scene.getScene('GameOver') as GameOverScene
+            gameOverScene.loser = this.playerNumber
+            this.scene.scene.start('GameOver')
         }
     }
 }

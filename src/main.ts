@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser'
 import { GameScene } from './gameScene';
 import { IntroScene } from './intro';
+import {GameOverScene} from "./gameOver";
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
   title: 'Sample',
@@ -15,11 +16,11 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
   physics: {
     default: 'arcade',
     arcade: {
-      debug: false,
+      debug: true,
     },
   },
  
-  scene: [IntroScene, GameScene],
+  scene: [IntroScene, GameScene, GameOverScene],
   parent: 'game',
   backgroundColor: '#000000',
 };

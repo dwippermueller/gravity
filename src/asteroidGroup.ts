@@ -9,6 +9,7 @@ export class Asteroid extends Phaser.Physics.Arcade.Sprite {
         this.body.reset(Math.random() * this.scene.game.canvas.width, -70)
         this.active = true
         this.visible = true
+        this.scale = 0.2 + Math.random() * 0.6
 
         this.body.velocity.y = Math.random() * 100 + 50;
         (this as GameObjectWithDynamicBody).body.angularVelocity = -20 + Math.random() * 40
@@ -20,6 +21,8 @@ export class Asteroid extends Phaser.Physics.Arcade.Sprite {
         if (this.y > this.scene.game.canvas.height + 150) {
             this.active = false
             this.visible = false
+            this.setVelocityX(0)
+            this.setVelocityY(0)
         }
     }
 }
