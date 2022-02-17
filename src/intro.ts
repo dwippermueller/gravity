@@ -1,4 +1,5 @@
 import Sprite = Phaser.GameObjects.Sprite
+import Key = Phaser.Input.Keyboard.Key;
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
     active: false,
@@ -17,6 +18,7 @@ export class IntroScene extends Phaser.Scene {
     private title: Sprite
     private created: Sprite
     private continue: Sprite
+    private spaceBar: Key
 
     private createTime: number
 
@@ -35,6 +37,8 @@ export class IntroScene extends Phaser.Scene {
     public create() {
         const windowWidth = window.innerWidth
         const windowHeight = window.innerHeight
+        this.spaceBar = this.input.keyboard.createCursorKeys().space
+
         this.starfield = this.add.tileSprite(windowWidth / 2, windowHeight / 2, windowWidth, windowHeight, 'starfield')
         
         this.heading = this.add.sprite(windowWidth / 2, windowHeight / 2 - 200, 'heading')
@@ -57,8 +61,7 @@ export class IntroScene extends Phaser.Scene {
     }
 
     public update() {
-        const spaceBar = this.input.keyboard.createCursorKeys().space
-        if (spaceBar.isDown) {
+        if (this.spaceBar.isDown) {
             this.scene.start('Game')
         }
         this.starfield.tilePositionY += 2

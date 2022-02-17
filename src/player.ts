@@ -3,6 +3,7 @@ import GameObjectWithDynamicBody = Phaser.Types.Physics.Arcade.GameObjectWithDyn
 import Sprite = Phaser.GameObjects.Sprite
 import GameObjectWithBody = Phaser.Types.Physics.Arcade.GameObjectWithBody;
 import {GameScene} from "./gameScene";
+import Group = Phaser.GameObjects.Group;
 
 const TURNING_SPEED = 200
 const THRUST_SPEED = 10
@@ -16,6 +17,7 @@ export class Player {
     private thrustKey: string
     public hasCollided: boolean = false
     public explosionTime: number = 0
+    private lives: Group
 
     constructor(scene: GameScene, key: string, playerNumber: integer, xPos: integer, yPos: integer) {
         this.scene = scene
@@ -46,6 +48,13 @@ export class Player {
             frameRate: 10,
             repeat: -1
         })
+
+        this.lives = this.scene.add.group()
+        for (let i = 0; i < 3; i++) {
+            let ship = this.lives.create(xPos + (30 * i), 60, 'starship1');
+            ship.scale = 0.1
+            ship.alpha = 0.4;
+        }
     }
 
     public update(
@@ -88,6 +97,7 @@ export class Player {
 
     hit = (player : GameObjectWithBody, bullet : GameObjectWithBody) => {
         this.explosionTime = this.sprite.scene.game.getTime()
+        this.lives.getFirstAlive().visible = false
         this.hasCollided = true
     }
 }

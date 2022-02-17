@@ -2,6 +2,7 @@ import { BulletGroup } from "./bulletGroup";
 import * as Phaser from "phaser";
 import { Player } from "./player";
 import {AsteroidGroup} from "./asteroidGroup";
+import Group = Phaser.GameObjects.Group;
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
     active: false,
@@ -35,7 +36,7 @@ export class GameScene extends Phaser.Scene {
         const windowHeight = window.innerHeight
         this.starfield = this.add.tileSprite(windowWidth / 2, windowHeight / 2, windowWidth, windowHeight, 'starfield')
         this.player1 = new Player(this, 'starship1', 1, 200, 400)
-        this.player2 = new Player(this, 'starship2', 2, 600, 400)
+        this.player2 = new Player(this, 'starship2', 2, windowWidth - 200, 400)
         this.asteroids = new AsteroidGroup(this)
         this.bullets = new BulletGroup(this)
 
@@ -44,6 +45,7 @@ export class GameScene extends Phaser.Scene {
 
         this.physics.add.collider(this.player1.sprite, this.asteroids, this.player1.hit);
         this.physics.add.collider(this.player2.sprite, this.asteroids, this.player2.hit);
+
     }
 
     public update() {
