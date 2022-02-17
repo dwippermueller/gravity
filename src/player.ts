@@ -148,6 +148,7 @@ export class Player {
         } else {
             let gameOverScene = this.scene.game.scene.getScene('GameOver') as GameOverScene
             gameOverScene.loser = this.playerNumber
+            this.scene.reset()
             this.scene.scene.start('GameOver')
         }
     }
