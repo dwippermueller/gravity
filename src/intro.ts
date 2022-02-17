@@ -41,19 +41,19 @@ export class IntroScene extends Phaser.Scene {
 
         this.starfield = this.add.tileSprite(windowWidth / 2, windowHeight / 2, windowWidth, windowHeight, 'starfield')
         
-        this.heading = this.add.sprite(windowWidth / 2, windowHeight / 2 - 200, 'heading')
+        this.heading = this.add.sprite(windowWidth / 2, windowHeight / 2 - 300, 'heading')
         this.heading.visible = false
         this.heading.scale = 0.5
 
-        this.title = this.add.sprite(windowWidth / 2, windowHeight / 2, 'title')
+        this.title = this.add.sprite(windowWidth / 2, windowHeight / 2 - 100, 'title')
         this.title.visible = false
         this.title.scale = 0.5
 
-        this.created = this.add.sprite(windowWidth / 2, windowHeight / 2 + 200, 'created')
+        this.created = this.add.sprite(windowWidth / 2, windowHeight / 2 + 100, 'created')
         this.created.visible = false
         this.created.scale = 0.5
 
-        this.continue = this.add.sprite(windowWidth / 2, windowHeight / 2 + 400, 'continue')
+        this.continue = this.add.sprite(windowWidth / 2, windowHeight / 2 + 300, 'continue')
         this.continue.visible = false
         this.continue.scale = 0.5
 

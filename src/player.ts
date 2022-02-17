@@ -63,6 +63,7 @@ export class Player {
             repeat: -1
         })
 
+        this.scene.add.text(xPos - 20, 20, 'Player ' + playerNumber, {fontSize: '20px', color: '#ff0000'})
         this.lives = this.scene.add.group()
         for (let i = 0; i < this.numberOfLives; i++) {
             let ship = this.lives.create(xPos + (30 * i), 60, 'starship1');

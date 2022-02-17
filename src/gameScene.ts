@@ -43,6 +43,7 @@ export class GameScene extends Phaser.Scene {
         this.bullets = new BulletGroup(this)
         this.player1.initColliders(this.bullets, this.asteroids)
         this.player2.initColliders(this.bullets, this.asteroids)
+        this.reset()
     }
 
     public update() {
@@ -64,16 +65,24 @@ export class GameScene extends Phaser.Scene {
     public reset() {
         this.bullets.children.each(c => {
             let bullet = c as Sprite
-            bullet.x = -20
-            bullet.y = -20
-            this.bullets.killAndHide(c)})
+            bullet.x = -100
+            bullet.y = -100
+            bullet.body.velocity.x = 0
+            bullet.body.velocity.y = 0
+            bullet.active = false
+            bullet.visible = false
+        })
 
         this.asteroids.children.each(c => {
             let asteroid = c as Sprite
-            asteroid.x = -20
-            asteroid.y = -20           
-            this.asteroids.killAndHide(c)})
-            
+            asteroid.x = -100
+            asteroid.y = -100 
+            asteroid.body.velocity.x = 0
+            asteroid.body.velocity.y = 0    
+            asteroid.active = false
+            asteroid.visible = false                 
+        })
+
         this.player1.reset()
         this.player2.reset()
     }

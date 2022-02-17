@@ -18,6 +18,8 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
         if(!this.scene.physics.world.bounds.contains(this.x, this.y)) {
             this.active = false
             this.visible = false
+            this.setVelocityX(0)
+            this.setVelocityY(0)
         }
     }
 
