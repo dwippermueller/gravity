@@ -37,7 +37,7 @@ export class GameScene extends Phaser.Scene {
         this.load.spritesheet('explosion', 'assets/explode.png', { frameWidth: 128, frameHeight: 128 })
         this.load.audio('pew', 'assets/sound/pew.mp3')
         this.load.audio('explosion', 'assets/sound/explosion.mp3')
-        this.load.audio('brian', 'assets/sound/pew.mp3')
+        this.load.audio('thrust', 'assets/sound/thrust.mp3')
     }
 
     public create() {
@@ -53,7 +53,6 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.asteroids, this.bullets);
         this.fireSound = this.sound.add('pew')
         this.explosionSound = this.sound.add('explosion')
-        this.thrustSound = this.sound.add('brian')
         this.reset()
     }
 

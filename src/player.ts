@@ -9,6 +9,7 @@ import { AsteroidGroup } from "./asteroidGroup";
 import {Scene} from "phaser";
 import {GameOverScene} from "./gameOver";
 import {game} from "./main";
+import BaseSound = Phaser.Sound.BaseSound;
 
 const TURNING_SPEED = 200
 const THRUST_SPEED = 10
@@ -29,6 +30,7 @@ export class Player {
     private playerNumber: integer
     private numberOfLives = 3
     private thrustOn = false
+    private thrustSound: BaseSound
 
     constructor(scene: GameScene, key: string, playerNumber: integer, xPos: integer, yPos: integer) {
         this.scene = scene
@@ -36,8 +38,8 @@ export class Player {
         this.yStartPosition = yPos
         this.playerNumber = playerNumber
         
-        this.noThrustKey = 'thrust' + playerNumber
-        this.thrustKey = 'no-thrust' + playerNumber
+        this.noThrustKey = 'no-thrust' + playerNumber
+        this.thrustKey = 'thrust' + playerNumber
     
         let player = scene.physics.add.sprite(xPos, yPos, key)
         player.scale = 0.2
@@ -63,6 +65,8 @@ export class Player {
             frameRate: 10,
             repeat: -1
         })
+
+        this.thrustSound = scene.sound.add('thrust')
 
         this.scene.add.text(xPos - 20, 20, 'Player ' + playerNumber, {fontSize: '20px', color: '#ff0000'})
         this.lives = this.scene.add.group()
@@ -91,16 +95,16 @@ export class Player {
 
         if (thrust.isDown) {
             if (!this.thrustOn) {
-                this.scene.thrustSound.play()
+                this.thrustSound.play({loop: true})
                 this.thrustOn = true
             }
             (this.sprite as Sprite).anims.play(this.thrustKey, true)
             const velocity = this.scene.physics.velocityFromAngle(this.sprite.body.rotation - 90, THRUST_SPEED)
             this.sprite.body.velocity.x += velocity.x
             this.sprite.body.velocity.y += velocity.y
-        } else {
+        } else if (thrust.isUp) {
             this.thrustOn = false;
-            this.scene.thrustSound.stop();
+            this.thrustSound.stop();
             (this.sprite as Sprite).anims.play(this.noThrustKey, true)
         }
         if (Phaser.Input.Keyboard.JustDown(fire)) {
