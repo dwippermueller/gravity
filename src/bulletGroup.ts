@@ -1,3 +1,5 @@
+import {GameScene} from "./gameScene";
+
 export class Bullet extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y, 'bullet')
@@ -9,7 +11,8 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
         this.visible = true
 
         this.body.velocity.x += velocity.x
-        this.body.velocity.y += velocity.y
+        this.body.velocity.y += velocity.y;
+        (this.scene as GameScene).fireSound.play()
     }
 
     public preUpdate(time, delta) {

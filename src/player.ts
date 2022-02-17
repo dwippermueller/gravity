@@ -28,6 +28,7 @@ export class Player {
     private lives: Group
     private playerNumber: integer
     private numberOfLives = 3
+    private thrustOn = false
 
     constructor(scene: GameScene, key: string, playerNumber: integer, xPos: integer, yPos: integer) {
         this.scene = scene
@@ -89,11 +90,17 @@ export class Player {
         }
 
         if (thrust.isDown) {
+            if (!this.thrustOn) {
+                this.scene.thrustSound.play()
+                this.thrustOn = true
+            }
             (this.sprite as Sprite).anims.play(this.thrustKey, true)
             const velocity = this.scene.physics.velocityFromAngle(this.sprite.body.rotation - 90, THRUST_SPEED)
             this.sprite.body.velocity.x += velocity.x
             this.sprite.body.velocity.y += velocity.y
         } else {
+            this.thrustOn = false;
+            this.scene.thrustSound.stop();
             (this.sprite as Sprite).anims.play(this.noThrustKey, true)
         }
         if (Phaser.Input.Keyboard.JustDown(fire)) {
@@ -124,6 +131,7 @@ export class Player {
     }
 
     hit = (player : GameObjectWithBody, bullet : GameObjectWithBody) => {
+        (this.scene as GameScene).explosionSound.play();
         this.explosionTime = this.sprite.scene.game.getTime()
         const life = this.lives.getFirstAlive()
         if (life) {
