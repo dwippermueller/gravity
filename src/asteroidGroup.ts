@@ -1,4 +1,5 @@
 import GameObjectWithDynamicBody = Phaser.Types.Physics.Arcade.GameObjectWithDynamicBody
+import Sprite = Phaser.GameObjects.Sprite
 
 export class Asteroid extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
@@ -42,6 +43,18 @@ export class AsteroidGroup extends Phaser.Physics.Arcade.Group {
     public spawn() {
         const asteroid = this.getFirstDead(false) as Asteroid
         asteroid.spawn()
+    }
+
+    public reset() {
+        this.children.each(c => {
+            let asteroid = c as Sprite
+            asteroid.x = -100
+            asteroid.y = -100 
+            asteroid.body.velocity.x = 0
+            asteroid.body.velocity.y = 0    
+            asteroid.active = false
+            asteroid.visible = false                 
+        })
     }
 
 }

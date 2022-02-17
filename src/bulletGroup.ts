@@ -1,4 +1,5 @@
 import {GameScene} from "./gameScene";
+import Sprite = Phaser.GameObjects.Sprite
 
 export class Bullet extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
@@ -26,7 +27,6 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-
 }
 
 const BULLET_SPEED = 500
@@ -50,6 +50,18 @@ export class BulletGroup extends Phaser.Physics.Arcade.Group {
         const bulletStart = this.scene.physics.velocityFromAngle(angle, 20)
         const velocity = this.scene.physics.velocityFromAngle(angle, BULLET_SPEED)
         bullet.fire(x + bulletStart.x, y + bulletStart.y, velocity)
+    }
+
+    public reset() {
+        this.children.each(c => {
+            let bullet = c as Sprite
+            bullet.x = -100
+            bullet.y = -100 
+            bullet.body.velocity.x = 0
+            bullet.body.velocity.y = 0    
+            bullet.active = false
+            bullet.visible = false                 
+        })
     }
 
 }
