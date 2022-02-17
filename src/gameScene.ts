@@ -3,6 +3,8 @@ import * as Phaser from "phaser";
 import { Player } from "./player";
 import {AsteroidGroup} from "./asteroidGroup";
 import Group = Phaser.GameObjects.Group;
+import Sprite = Phaser.GameObjects.Sprite
+
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
     active: false,
@@ -14,8 +16,8 @@ export class GameScene extends Phaser.Scene {
     private player1: Player
     private player2: Player
     private starfield: Phaser.GameObjects.TileSprite
-    private bullets: BulletGroup
-    private asteroids: AsteroidGroup
+    public bullets: BulletGroup
+    public asteroids: AsteroidGroup
     private asteroidTime: number = 0
 
     constructor() {
@@ -39,13 +41,8 @@ export class GameScene extends Phaser.Scene {
         this.player2 = new Player(this, 'starship2', 2, windowWidth - 200, 400)
         this.asteroids = new AsteroidGroup(this)
         this.bullets = new BulletGroup(this)
-
-        this.physics.add.collider(this.player1.sprite, this.bullets, this.player1.hit);
-        this.physics.add.collider(this.player2.sprite, this.bullets, this.player2.hit);
-
-        this.physics.add.collider(this.player1.sprite, this.asteroids, this.player1.hit);
-        this.physics.add.collider(this.player2.sprite, this.asteroids, this.player2.hit);
-
+        this.player1.initColliders(this.bullets, this.asteroids)
+        this.player2.initColliders(this.bullets, this.asteroids)
     }
 
     public update() {
@@ -65,8 +62,18 @@ export class GameScene extends Phaser.Scene {
     }
 
     public reset() {
-        this.bullets.children.each(c => this.bullets.killAndHide(c))
-        this.asteroids.children.each(c => this.asteroids.killAndHide(c))
+        this.bullets.children.each(c => {
+            let bullet = c as Sprite
+            bullet.x = -20
+            bullet.y = -20
+            this.bullets.killAndHide(c)})
+
+        this.asteroids.children.each(c => {
+            let asteroid = c as Sprite
+            asteroid.x = -20
+            asteroid.y = -20           
+            this.asteroids.killAndHide(c)})
+            
         this.player1.reset()
         this.player2.reset()
     }

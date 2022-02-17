@@ -1,3 +1,5 @@
+import GameObjectWithDynamicBody = Phaser.Types.Physics.Arcade.GameObjectWithDynamicBody
+
 export class Asteroid extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y, 'asteroid')
@@ -8,7 +10,8 @@ export class Asteroid extends Phaser.Physics.Arcade.Sprite {
         this.active = true
         this.visible = true
 
-        this.body.velocity.y = Math.random() * 100 + 50
+        this.body.velocity.y = Math.random() * 100 + 50;
+        (this as GameObjectWithDynamicBody).body.angularVelocity = -20 + Math.random() * 40
     }
 
     public preUpdate(time, delta) {

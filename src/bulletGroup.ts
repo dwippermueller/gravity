@@ -23,6 +23,9 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
 
 
 }
+
+const BULLET_SPEED = 500
+
 export class BulletGroup extends Phaser.Physics.Arcade.Group {
     constructor(scene) {
         super(scene.physics.world, scene)
@@ -36,9 +39,12 @@ export class BulletGroup extends Phaser.Physics.Arcade.Group {
         })
     }
 
-    public fireBullet(x: integer, y: integer, velocity: Phaser.Math.Vector2) {
+    public fireBullet(x: integer, y: integer, angle: integer) {
         const bullet = this.getFirstDead(false) as Bullet
-        bullet.fire(x + 10, y + 10, velocity)
+
+        const bulletStart = this.scene.physics.velocityFromAngle(angle, 20)
+        const velocity = this.scene.physics.velocityFromAngle(angle, BULLET_SPEED)
+        bullet.fire(x + bulletStart.x, y + bulletStart.y, velocity)
     }
 
 }

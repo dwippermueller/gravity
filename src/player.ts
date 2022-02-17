@@ -4,10 +4,11 @@ import Sprite = Phaser.GameObjects.Sprite
 import GameObjectWithBody = Phaser.Types.Physics.Arcade.GameObjectWithBody;
 import {GameScene} from "./gameScene";
 import Group = Phaser.GameObjects.Group;
+import Collider = Phaser.Physics.Arcade.Collider
+import { AsteroidGroup } from "./asteroidGroup";
 
 const TURNING_SPEED = 200
 const THRUST_SPEED = 10
-const BULLET_SPEED = 500
 
 export class Player {
     
@@ -19,6 +20,8 @@ export class Player {
     private yStartPosition: integer
     public hasCollided: boolean = false
     public explosionTime: number = 0
+    private bulletCollider: Collider
+    private asteroidCollider: Collider
     private lives: Group
 
     constructor(scene: GameScene, key: string, playerNumber: integer, xPos: integer, yPos: integer) {
@@ -87,8 +90,7 @@ export class Player {
             (this.sprite as Sprite).anims.play(this.noThrustKey, true)
         }
         if (Phaser.Input.Keyboard.JustDown(fire)) {
-            const velocity = this.scene.physics.velocityFromAngle(this.sprite.body.rotation - 90, BULLET_SPEED)
-            bullets.fireBullet(this.sprite.body.x + 15, this.sprite.body.y + 20, velocity.add(this.sprite.body.velocity))
+            bullets.fireBullet(this.sprite.body.x + 15, this.sprite.body.y + 20, this.sprite.body.rotation - 90)
         }
 
         if (right.isDown) {
@@ -102,16 +104,27 @@ export class Player {
 
     public reset() {
         this.sprite.body.reset(this.xStartPosition, this.yStartPosition)
+        this.sprite.body.enable = true
         this.hasCollided = false
         this.explosionTime = 0
+        this.bulletCollider.active = true
+        this.asteroidCollider.active = true
+    }
+
+    public initColliders(bullets: BulletGroup, asteroids: AsteroidGroup) {
+        this.bulletCollider = this.scene.physics.add.collider(this.sprite, bullets, this.hit);
+        this.asteroidCollider = this.scene.physics.add.collider(this.sprite, asteroids, this.hit);
     }
 
     hit = (player : GameObjectWithBody, bullet : GameObjectWithBody) => {
         this.explosionTime = this.sprite.scene.game.getTime()
         const life = this.lives.getFirstAlive()
-        life.visible = false
-        life.active = false
-        player.active = false
-        this.hasCollided = true
+        if (life) {
+            life.visible = false
+            life.active = false
+            this.hasCollided = true
+            this.bulletCollider.active = false
+            this.asteroidCollider.active = false
+        }
     }
 }
