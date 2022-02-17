@@ -9,7 +9,7 @@ const BULLET_SPEED = 500
 export class Player {
     
     private scene: Phaser.Scene
-    private sprite: GameObjectWithDynamicBody
+    public sprite: GameObjectWithDynamicBody
     private noThrustKey: string
     private thrustKey: string
 
@@ -20,7 +20,6 @@ export class Player {
     
         let player = scene.physics.add.sprite(xPos, yPos, key)
         player.scale = 0.2
-        player.body.setGravityY(70)
         player.body.setBounce(0.3, 0.3);
         player.body.setCollideWorldBounds(true)
         this.sprite = player
