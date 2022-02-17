@@ -5,7 +5,8 @@ import {AsteroidGroup} from "./asteroidGroup";
 import Group = Phaser.GameObjects.Group;
 import Sprite = Phaser.GameObjects.Sprite
 import BaseSound = Phaser.Sound.BaseSound;
-
+import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys
+import Key = Phaser.Input.Keyboard.Key
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
     active: false,
@@ -17,6 +18,10 @@ export class GameScene extends Phaser.Scene {
     private player1: Player
     private player2: Player
     private starfield: Phaser.GameObjects.TileSprite
+    private cursorKeys: CursorKeys
+    private wKey: Key
+    private aKey: Key
+    private dKey: Key
     public bullets: BulletGroup
     public asteroids: AsteroidGroup
     private asteroidTime: number = 0
@@ -53,18 +58,19 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.asteroids, this.bullets);
         this.fireSound = this.sound.add('pew')
         this.explosionSound = this.sound.add('explosion')
+        this.cursorKeys = this.input.keyboard.createCursorKeys()
+        this.wKey = this.input.keyboard.addKey('W')
+        this.aKey = this.input.keyboard.addKey('A')
+        this.dKey = this.input.keyboard.addKey('D')
+
         this.reset()
     }
 
     public update() {
         this.starfield.tilePositionY += 2
-        const cursorKeys = this.input.keyboard.createCursorKeys()
-        const wKey = this.input.keyboard.addKey('W')
-        const aKey = this.input.keyboard.addKey('A')
-        const dKey = this.input.keyboard.addKey('D')
 
-        this.player1.update(cursorKeys.up, cursorKeys.space, cursorKeys.left, cursorKeys.right, this.bullets)
-        this.player2.update(wKey, cursorKeys.shift, aKey, dKey, this.bullets)
+        this.player1.update(this.cursorKeys.up, this.cursorKeys.space, this.cursorKeys.left, this.cursorKeys.right, this.bullets)
+        this.player2.update(this.wKey, this.cursorKeys.shift, this.aKey, this.dKey, this.bullets)
 
         if (this.game.getTime() > this.asteroidTime) {
             this.asteroids.spawn()
