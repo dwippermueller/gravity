@@ -19,7 +19,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     },
   },
  
-  scene: IntroScene,
+  scene: [IntroScene, GameScene],
   parent: 'game',
   backgroundColor: '#000000',
 };
