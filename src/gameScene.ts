@@ -63,4 +63,11 @@ export class GameScene extends Phaser.Scene {
             this.asteroidTime = this.game.getTime() + 2000
         }
     }
+
+    public reset() {
+        this.bullets.children.each(c => this.bullets.killAndHide(c))
+        this.asteroids.children.each(c => this.asteroids.killAndHide(c))
+        this.player1.reset()
+        this.player2.reset()
+    }
 }

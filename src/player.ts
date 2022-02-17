@@ -15,12 +15,17 @@ export class Player {
     public sprite: GameObjectWithDynamicBody
     private noThrustKey: string
     private thrustKey: string
+    private xStartPosition: integer
+    private yStartPosition: integer
     public hasCollided: boolean = false
     public explosionTime: number = 0
     private lives: Group
 
     constructor(scene: GameScene, key: string, playerNumber: integer, xPos: integer, yPos: integer) {
         this.scene = scene
+        this.xStartPosition = xPos
+        this.yStartPosition = yPos
+        
         this.noThrustKey = 'thrust' + playerNumber
         this.thrustKey = 'no-thrust' + playerNumber
     
@@ -68,7 +73,7 @@ export class Player {
             if (this.sprite.scene.game.getTime() < this.explosionTime + 1000) {
                 (this.sprite as Sprite).anims.play('explode', true);
             } else {
-                this.scene.scene.restart()
+                (this.scene as GameScene).reset()
             }
             return
         }
@@ -95,9 +100,18 @@ export class Player {
         }
     }
 
+    public reset() {
+        this.sprite.body.reset(this.xStartPosition, this.yStartPosition)
+        this.hasCollided = false
+        this.explosionTime = 0
+    }
+
     hit = (player : GameObjectWithBody, bullet : GameObjectWithBody) => {
         this.explosionTime = this.sprite.scene.game.getTime()
-        this.lives.getFirstAlive().visible = false
+        const life = this.lives.getFirstAlive()
+        life.visible = false
+        life.active = false
+        player.active = false
         this.hasCollided = true
     }
 }
