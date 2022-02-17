@@ -127,6 +127,7 @@ export class Player {
         this.explosionTime = 0
         this.bulletCollider.active = true
         this.asteroidCollider.active = true
+        this.thrustSound.stop()
     }
 
     public initColliders(bullets: BulletGroup, asteroids: AsteroidGroup) {
