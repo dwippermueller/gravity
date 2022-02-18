@@ -69,8 +69,8 @@ export class GameScene extends Phaser.Scene {
     public update() {
         this.starfield.tilePositionY += 2
 
-        this.player1.update(this.cursorKeys.up, this.cursorKeys.space, this.cursorKeys.left, this.cursorKeys.right, this.bullets)
-        this.player2.update(this.wKey, this.cursorKeys.shift, this.aKey, this.dKey, this.bullets)
+        this.player1.update(this.wKey, this.cursorKeys.shift, this.aKey, this.dKey, this.bullets)
+        this.player2.update(this.cursorKeys.up, this.cursorKeys.space, this.cursorKeys.left, this.cursorKeys.right, this.bullets)
 
         if (this.game.getTime() > this.asteroidTime) {
             this.asteroids.spawn()
