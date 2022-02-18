@@ -76,7 +76,7 @@ export class IntroScene extends Phaser.Scene {
         this.controlGroup1.add(controlBullet1)
         this.controlGroup1.add(this.add.text(150, ctrlYPos - 30, 'W', {fontSize: '200px', color: '#ff0000'}))
         this.controlGroup1.add(this.add.text(150, ctrlYPos + ctrlYGap - 30, 'A', {fontSize: '200px', color: '#ff0000'}))
-        this.controlGroup1.add(this.add.text(150, ctrlYPos + 2 * ctrlYGap - 30, 'S', {fontSize: '200px', color: '#ff0000'}))
+        this.controlGroup1.add(this.add.text(150, ctrlYPos + 2 * ctrlYGap - 30, 'D', {fontSize: '200px', color: '#ff0000'}))
         this.controlGroup1.add(this.add.text(150, ctrlYPos + 3 * ctrlYGap - 30, 'SHIFT', {fontSize: '200px', color: '#ff0000'}))
         this.controlGroup1.propertyValueSet('scale', 0.2)
         this.controlGroup1.propertyValueSet('visible', 0)
