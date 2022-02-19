@@ -125,8 +125,6 @@ export class Player {
         this.sprite.body.enable = true
         this.hasCollided = false
         this.explosionTime = 0
-        this.bulletCollider.active = true
-        this.asteroidCollider.active = true
         this.thrustSound.stop()
     }
 
@@ -136,6 +134,9 @@ export class Player {
     }
 
     hit = (player : GameObjectWithBody, bullet : GameObjectWithBody) => {
+        if (!bullet.active) {
+            return
+        }
         (this.scene as GameScene).explosionSound.play();
         this.explosionTime = this.sprite.scene.game.getTime()
         const life = this.lives.getFirstAlive()
@@ -143,8 +144,6 @@ export class Player {
             life.visible = false
             life.active = false
             this.hasCollided = true
-            this.bulletCollider.active = false
-            this.asteroidCollider.active = false
         } else {
             let gameOverScene = this.scene.game.scene.getScene('GameOver') as GameOverScene
             gameOverScene.loser = this.playerNumber

@@ -22,6 +22,7 @@ export class Asteroid extends Phaser.Physics.Arcade.Sprite {
         if (this.y > window.innerHeight + 50 || this.y < -100) {
             this.active = false
             this.visible = false
+            this.x = -100
             this.setVelocityX(0)
             this.setVelocityY(0)
         }
@@ -49,11 +50,8 @@ export class AsteroidGroup extends Phaser.Physics.Arcade.Group {
         this.children.each(c => {
             let asteroid = c as Sprite
             asteroid.x = -100
-            asteroid.y = -100 
-            asteroid.body.velocity.x = 0
-            asteroid.body.velocity.y = 0    
             asteroid.active = false
-            asteroid.visible = false                 
+            asteroid.visible = false 
         })
     }
 

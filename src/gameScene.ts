@@ -55,7 +55,6 @@ export class GameScene extends Phaser.Scene {
         this.bullets = new BulletGroup(this)
         this.player1.initColliders(this.bullets, this.asteroids)
         this.player2.initColliders(this.bullets, this.asteroids)
-        this.physics.add.collider(this.asteroids, this.bullets);
         this.fireSound = this.sound.add('pew')
         this.explosionSound = this.sound.add('explosion')
         this.cursorKeys = this.input.keyboard.createCursorKeys()

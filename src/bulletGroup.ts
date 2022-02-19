@@ -22,6 +22,7 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
         if(!this.scene.physics.world.bounds.contains(this.x, this.y)) {
             this.active = false
             this.visible = false
+            this.x = window.innerWidth + 100
             this.setVelocityX(0)
             this.setVelocityY(0)
         }
@@ -54,11 +55,10 @@ export class BulletGroup extends Phaser.Physics.Arcade.Group {
 
     public reset() {
         this.children.each(c => {
-            let bullet = c as Sprite
-            bullet.x = -100
-            bullet.y = -100 
-            bullet.body.velocity.x = 0
-            bullet.body.velocity.y = 0    
+            let bullet = c as Phaser.Physics.Arcade.Sprite
+            bullet.x = window.innerWidth + 100
+            bullet.setVelocityX(0)
+            bullet.setVelocityY(0)
             bullet.active = false
             bullet.visible = false                 
         })
