@@ -134,9 +134,6 @@ export class Player {
     }
 
     hit = (player : GameObjectWithBody, bullet : GameObjectWithBody) => {
-        if (!bullet.active) {
-            return
-        }
         (this.scene as GameScene).explosionSound.play();
         this.explosionTime = this.sprite.scene.game.getTime()
         const life = this.lives.getFirstAlive()
